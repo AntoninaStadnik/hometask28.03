@@ -1,0 +1,26 @@
+[
+    {
+        "director": "j.Rowling",
+        "id": 1,
+        "title": "harry potter",
+        "year": 2005
+    },
+    {
+        "director": "Cameron",
+        "id": 3,
+        "title": "Titanik",
+        "year": 1997
+    },
+    {
+        "id": 2,
+        "title": "Terminator",
+        "director": "Cameron",
+        "year": 1998
+    },
+    {
+        "id": 5,
+        "title": "Jurassic Park",
+        "director": "Spilberg",
+        "year": 1993
+    }
+]
