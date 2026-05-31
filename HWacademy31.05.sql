@@ -1,0 +1,249 @@
+-- Кафедри (Departments)
+-- ■ Ідентифікатор (Id). Унікальний ідентифікатор кафедри.
+-- ▷ Тип даних — int.
+-- ▷ Автоприріст.
+-- ▷ Не містить null-значення.
+-- ▷ Первинний ключ.
+-- ■ Фінансування (Financing). Фонд фінансування кафедри.
+-- ▷ Тип даних — money.
+-- ▷ Не містить null-значення.
+-- ▷ Не може бути менше, ніж 0.
+-- ▷ Значення за замовчуванням — 0.
+-- ■ Назва (Name). Назва кафедри.
+-- ▷ Тип даних — varchar(100).
+-- ▷ Не містить null-значення.
+-- ▷ Не може бути порожньою.
+-- ▷ Має бути унікальною.
+
+-- CREATE TABLE DEPARTMENT (
+--     ID SERIAL PRIMARY KEY,
+-- 	FINANCING MONEY NOT NULL DEFAULT 0::MONEY CHECK (FINANCING >= 0::MONEY),
+-- 	NAME VARCHAR(100) NOT NULL UNIQUE CHECK (TRIM(NAME) <> '')
+-- )
+
+-- DROP TABLE DEPARTMENT
+
+-- Факультети(Faculties)
+-- ■ Ідентифікатор (Id). Унікальний ідентифікатор факультету.
+-- ▷ Тип даних — int.
+-- ▷ Автоприріст.
+-- ▷ Не містить null-значення.
+-- ▷ Первинний ключ.
+-- ■ Декан (Dean). Декан факультету.
+-- ▷ Тип даних — varchar(255).
+-- ▷ Не містить null-значення.
+-- ▷ Не може бути порожнім.
+-- ■ Назва (Name). Назва факультету.
+-- ▷ Тип даних — varchar(100).
+-- ▷ Не містить null-значення.
+-- ▷ Не може бути порожньою.
+-- ▷ Має бути унікальною
+
+-- CREATE TABLE FACULTIES (
+--     ID SERIAL PRIMARY KEY,
+-- 	DEAN VARCHAR(255) NOT NULL CHECK (TRIM(DEAN) <> ''),
+-- 	NAME VARCHAR(100) NOT NULL UNIQUE CHECK (TRIM(NAME) <> '')
+-- )
+
+-- Групи (Groups)
+-- ■ Ідентифікатор (Id). Унікальний ідентифікатор групи.
+-- ▷ Тип даних — int.
+-- ▷ Автоприріст.
+-- ▷ Не містить null-значення.
+-- ▷ Первинний ключ.
+-- ■ Назва (Name). Назва групи.
+-- ▷ Тип даних — varchar(10).
+-- ▷ Не містить null-значення.
+-- ▷ Не може бути порожньою.
+-- ▷ Має бути унікальною.
+-- ■ Рейтинг (Rating). Рейтинг групи.
+-- ▷ Тип даних — int.
+-- ▷ Не містить null-значення.
+-- ▷ Має бути в діапазоні від 0 до 5.
+-- ■ Курс (Year). Курс (рік), на якому навчається група.
+-- ▷ Тип даних — int.
+-- ▷ Не містить null-значення.
+-- ▷ Має бути в діапазоні від 1 до 5.
+
+-- CREATE TABLE GROUPS (
+--     ID SERIAL PRIMARY KEY,
+-- 	NAME VARCHAR(10) NOT NULL UNIQUE CHECK (TRIM(NAME) <> ''),
+-- 	RATING INT NOT NULL CHECK (RATING BETWEEN 0 AND 5),
+-- 	YEAR INT NOT NULL CHECK (YEAR BETWEEN 1 AND 5)
+-- )
+
+-- Викладачі(Teachers)
+-- ■ Ідентифікатор (Id). Унікальний ідентифікатор
+-- викладача.
+-- ▷ Тип даних — int.
+-- ▷ Автоприріст.
+-- Не містить null-значення.
+-- ▷ Первинний ключ.
+-- ■ Дата працевлаштування (EmploymentDate). Дата працевлаштування викладача.
+-- ▷ Тип даних — date.
+-- ▷ Не містить null-значення.
+-- ▷ Не може бути менше 01.01.1990.
+-- ■ Асистент (IsAssistant). Чи є викладач асистентом.
+-- ▷ Тип даних — bit.
+-- ▷ Не містить null-значення.
+-- ▷ Значення за замовчуванням — 0.
+-- ■ Професор (IsProfessor). Чи є викладач професором.
+-- ▷ Тип даних — bit.
+-- ▷ Не містить null-значення.
+-- ▷ Значення за замовчуванням — 0.
+-- ■ Ім’я (Name). Ім’я викладача.
+-- ▷ Тип даних — nvarchar(max).
+-- ▷ Не містить null-значення.
+-- ▷ Не може бути порожнє.
+-- ■ Посада (Position). Посада викладача.
+-- ▷ Тип даних — varchar(max).
+-- ▷ Не містить null-значення.
+-- ▷ Не може бути порожньою.
+-- ■ Надбавка (Premium). Надбавка викладача.
+-- ▷ Тип даних — money.
+-- ▷ Не містить null-значення.
+-- ▷ Не може бути менше, ніж 0.
+-- ▷ Значення за замовчуванням — 0.
+-- ■ Ставка (Salary). Ставка викладача.
+--  Тип даних — money.
+-- ▷ Не містить null-значення.
+-- ▷ Не може бути меншою або дорівнювати 0.
+-- ■ Прізвище (Surname). Прізвище викладача.
+-- ▷ Тип даних — varchar(max).
+-- ▷ Не містить null-значення.
+-- ▷ Не може бути порожнє.
+
+-- CREATE TABLE TEACHERS (
+--     ID SERIAL PRIMARY KEY,
+-- 	EMPLOYMENTDATE DATE NOT NULL CHECK (EMPLOYMENTDATE >= DATE '1990-01-01'),
+-- 	ISASSISTANT BIT(1) NOT NULL DEFAULT B'0',
+-- 	ISPROFESSOR BIT(1) NOT NULL DEFAULT B'0',
+-- 	NAME VARCHAR(255) NOT NULL CHECK (TRIM(NAME) <> ''),
+-- 	POSITION VARCHAR(255) NOT NULL CHECK (TRIM(POSITION) <> ''),
+-- 	PREMIUM MONEY NOT NULL DEFAULT 0::MONEY CHECK (PREMIUM >= 0::MONEY),
+-- 	SALARY MONEY NOT NULL CHECK (SALARY > 0::MONEY),
+-- 	SURNAME VARCHAR(255) NOT NULL CHECK (TRIM(SURNAME) <> '')
+-- )
+
+-- INSERT INTO DEPARTMENT (FINANCING, NAME)
+-- VALUES
+--     (100000::MONEY, 'Computer Science'),
+--     (75000::MONEY, 'Mathematics'),
+--     (50000::MONEY, 'Physics'),
+--     (60000::MONEY, 'Economics'),
+--     (45000::MONEY, 'History')
+
+-- INSERT INTO FACULTIES (DEAN, NAME)
+-- VALUES
+--     ('Ivan Petrenko', 'Engineering'),
+--     ('Olena Kovalenko', 'Science'),
+--     ('Mykhailo Bondar', 'Business'),
+--     ('Iryna Shevchenko', 'Humanities'),
+--     ('Andrii Melnyk', 'Law')
+
+-- INSERT INTO GROUPS (NAME, RATING, YEAR)
+-- VALUES
+--     ('CS101', 5, 1),
+--     ('CS201', 4, 2),
+--     ('CS301', 5, 3),
+--     ('MA101', 3, 1),
+--     ('PH401', 4, 4),
+--     ('EC501', 5, 5)
+
+-- INSERT INTO TEACHERS
+-- (
+--     EMPLOYMENTDATE,
+--     ISASSISTANT,
+--     ISPROFESSOR,
+--     NAME,
+--     POSITION,
+--     PREMIUM,
+--     SALARY,
+--     SURNAME
+-- )
+-- VALUES
+-- (
+--     '2005-09-01',
+--     B'0',
+--     B'1',
+--     'Ivan',
+--     'Professor',
+--     5000::MONEY,
+--     30000::MONEY,
+--     'Petrenko'
+-- ),
+-- (
+--     '2010-03-15',
+--     B'0',
+--     B'1',
+--     'Olena',
+--     'Professor',
+--     4500::MONEY,
+--     28000::MONEY,
+--     'Kovalenko'
+-- ),
+-- (
+--     '2018-08-20',
+--     B'1',
+--     B'0',
+--     'Andrii',
+--     'Assistant',
+--     1500::MONEY,
+--     12000::MONEY,
+--     'Melnyk'
+-- ),
+-- (
+--     '2015-02-10',
+--     B'0',
+--     B'0',
+--     'Iryna',
+--     'Senior Lecturer',
+--     2500::MONEY,
+--     18000::MONEY,
+--     'Shevchenko'
+-- ),
+-- (
+--     '2020-01-15',
+--     B'1',
+--     B'0',
+--     'Mykhailo',
+--     'Assistant',
+--     1000::MONEY,
+--     10000::MONEY,
+--     'Bondar'
+-- );
+
+-- 1.Вивести таблицю кафедр, але розташувати її поля у зворотному порядку.
+-- SELECT NAME, FINANCING, ID
+-- FROM DEPARTMENT
+
+-- 2. Вивести назви груп та їх рейтинги з уточненнями до назв полів відповідно до назви таблиці.
+-- SELECT *
+-- FROM GROUPS
+-- SELECT
+--     NAME AS "Groups.Name",
+--     RATING AS "Groups.Rating"
+-- FROM GROUPS
+
+-- 3. Вивести для викладачів їх прізвища, відсоток ставки по відношенню до надбавки та відсоток ставки по відношенню до зарплати (сума ставки та надбавки).
+-- SELECT*
+-- FROM TEACHERS
+
+-- SELECT
+--     SURNAME,
+
+--     (SALARY / PREMIUM) * 100 AS salary_to_premium_percent,
+
+--     (SALARY / (SALARY + PREMIUM)) * 100 AS salary_to_total_percent
+-- FROM TEACHERS;
+
+-- 4. Вивести таблицю факультетів одним полем у такому форматі: «The dean of faculty [faculty] is [dean].».
+-- SELECT
+--     'The dean of faculty ' || NAME || ' is ' || DEAN || '.'
+--     AS faculty_info
+-- FROM FACULTIES
+
+-- 5. Вивести прізвища професорів, ставка яких перевищує 1050
+-- SELECT SURNAME, POSITION, SALARY
+-- FROM TEACHERS
+-- WHERE POSITION = 'Professor' AND SALARY > 1050::MONEY
