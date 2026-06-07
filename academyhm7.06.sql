@@ -1,0 +1,356 @@
+-- Куратори (Curators)
+-- ■ Ідентифікатор (Id). Унікальний ідентифікатор куратора.
+-- ▷ Тип даних — int.
+-- ▷ Автоприріст.
+-- ▷ Не містить null-значення.
+-- ▷ Первинний ключ.
+-- ■ Ім’я (Name). Ім’я куратора.
+-- ▷ Тип даних — varchar(max).
+-- ▷ Не містить null-значення.
+-- ▷ Не може бути порожнє.
+-- ■ Прізвище (Surname). Прізвище куратора.
+-- ▷ Тип даних — varchar(max).
+-- ▷ Не містить null-значення.
+-- ▷ Не може бути порожнє.
+
+-- CREATE TABLE CURATORS (
+--     ID SERIAL PRIMARY KEY,
+--     NAME VARCHAR(100) NOT NULL CHECK (trim(NAME) <> ''),
+--     SURNAME VARCHAR(100) NOT NULL CHECK (trim(SURNAME) <> '')
+-- )
+
+--  Кафедри (Departments)
+-- ■ Ідентифікатор (Id). Унікальний ідентифікатор кафедри.
+-- ▷ Тип даних — int.
+-- ▷ Автоприріст.
+-- ▷ Не містить null-значення.
+-- ▷ Первинний ключ.
+-- ■ Фінансування (Financing). Фонд фінансування кафедри.
+-- ▷ Тип даних — DECIMAL(10, 2).
+-- ▷ Не містить null-значення.
+-- ▷ Не може бути менше, ніж 0.
+-- ▷ Значення за замовчуванням — 0.
+-- ■ Назва (Name). Назва кафедри.
+-- ▷ Тип даних — varchar(100).
+-- ▷ Не містить null-значення.
+-- ▷ Не може бути порожньою.
+-- ▷ Має бути унікальною.
+-- ■ Ідентифікатор факультету (FacultyId). Факультет, до складу
+-- якого належить кафедра.
+-- ▷ Тип даних — int.
+-- ▷ Не містить null-значення.
+-- ▷ Зовнішній ключ.
+
+-- CREATE TABLE DEPARTMENTS (
+--     ID SERIAL PRIMARY KEY,
+--     FINANCING DECIMAL(10, 2) NOT NULL DEFAULT 0 CHECK (FINANCING >= 0),
+--     NAME VARCHAR(100) NOT NULL UNIQUE CHECK (trim(NAME) <> ''),
+--     FACULTYID INT NOT NULL,
+--     FOREIGN KEY (FACULTYID) REFERENCES FACULTIES(ID)
+-- )
+
+-- Факультети (Faculties)
+-- ■ Ідентифікатор (Id). Унікальний ідентифікатор
+-- факультету.
+-- ▷ Тип даних — int.
+-- ▷ Автоприріст.
+-- ▷ Не містить null-значення.
+-- ▷ Первинний ключ.
+-- ■ Фінансування (Financing). Фонд фінансування факультету.
+-- ▷ Тип даних — DECIMAL(10, 2).
+-- ▷ Не містить null-значення.
+-- ▷ Не може бути менше, ніж 0.
+-- ▷ Значення за замовчуванням — 0.
+-- ■ Назва (Name). Назва факультету.
+-- ▷ Тип даних — varchar(100).
+-- ▷ Не містить null-значення.
+-- ▷ Не може бути порожнь
+
+-- CREATE TABLE FACULTIES(
+-- 	ID SERIAL NOT NULL PRIMARY KEY,
+-- 	FINANCING DECIMAL(10, 2) NOT NULL DEFAULT 0 CHECK (FINANCING >= 0),
+-- 	NAME VARCHAR(100) NOT NULL CHECK (trim(NAME) <> '')
+-- )
+
+-- Групи (Groups)
+-- ■ Ідентифікатор (Id). Унікальний ідентифікатор групи.
+-- ▷ Тип даних — int.
+-- ▷ Автоприріст.
+-- ▷ Не містить null-значення.
+-- ▷ Первинний ключ.
+-- ■ Назва (Name). Назва групи.
+-- ▷ Тип даних — varchar(10).
+-- ▷ Не містить null-значення.
+-- ▷ Не може бути порожньою.
+-- ▷ Має бути унікальною.
+-- ■ Курс (Year). Курс (рік), на якому навчається група.
+-- ▷ Тип даних — int.
+-- ▷ Не містить null-значення.
+-- ▷ Має бути в діапазоні від 1 до 5.
+-- ■ Ідентифікатор кафедри (DepartmentId). Кафедра, до складу
+-- якої належить група.
+-- ▷ Тип даних — int.
+-- ▷ Не містить null-значення.
+-- ▷ Зовнішній ключ
+-- CREATE TABLE GROUPS(
+-- 	ID SERIAL NOT NULL PRIMARY KEY,
+-- 	NAME VARCHAR(10) NOT NULL NOT NULL CHECK (trim(NAME) <> '') UNIQUE,
+-- 	YEAR INT NOT NULL CHECK (YEAR BETWEEN 1 AND 5),
+-- 	DEPARTMENTID INT NOT NULL,
+-- 	FOREIGN KEY (DEPARTMENTID) REFERENCES FACULTIES(ID)
+-- )
+
+-- рупи та куратори (GroupsCurators)
+-- ■ Ідентифікатор (Id). Унікальний ідентифікатор групи та
+-- куратора.
+-- ▷ Тип даних — int.
+-- ▷ Автоприріст.
+-- ▷ Не містить null-значення.
+-- ▷ Первинний ключ.
+-- ■ Ідентифікатор куратора (CuratorId). Куратор.
+-- ▷ Тип даних — int.
+-- ▷ Не містить null-значення.
+-- ▷ Зовнішній ключ.
+-- ■ Ідентифікатор групи (GroupId). Група.
+-- ▷ Тип даних — int.
+-- ▷ Не містить null-значення.
+-- ▷ Зовнішній ключ.
+-- CREATE TABLE GROUPSCURATORS(
+-- 	ID SERIAl NOT NULL PRIMARY KEY,
+-- 	CURATORID INT NOT NULL,
+-- 	FOREIGN KEY (CURATORID) REFERENCES CURATORS(ID),
+-- 	GROUPID INT NOT NULL,
+-- 	FOREIGN KEY (GROUPID) REFERENCES GROUPS(ID)
+-- )
+
+-- Групи та лекції (GroupsLectures)
+-- ■ Ідентифікатор (Id). Унікальний ідентифікатор групи та
+-- лекції.
+-- ▷ Тип даних — int.
+-- ▷ Автоприріст.
+-- ▷ Не містить null-значення.
+-- ▷ Первинний ключ.
+-- ■ Ідентифікатор групи (GroupId). Група.
+-- ▷ Тип даних — int.
+-- ▷ Не містить null-значення.
+-- ▷ Зовнішній ключ.
+-- ■ Ідентифікатор лекції (LectureId). Лекція.
+-- ▷ Тип даних — int.
+-- ▷ Не містить null-значення.
+-- ▷ Зовнішній ключ.
+-- CREATE TABLE GROUPSLECTURES(
+-- 	ID SERIAL NOT NULL PRIMARY KEY,
+-- 	GROUPID INT NOT NULL,
+-- 	FOREIGN KEY (GROUPID) REFERENCES GROUPS(ID),
+-- 	LECTUREID INT NOT NULL,
+-- 	FOREIGN KEY (LECTUREID) REFERENCES LECTURES(ID) 
+-- )
+
+-- Лекції (Lectures)
+-- ■ Ідентифікатор (Id). Унікальний ідентифікатор лекції.
+-- ▷ Тип даних — int.
+-- ▷ Автоприріст.
+-- ▷ Не містить null-значення.
+-- ▷ Первинний ключ.
+-- ■ Аудиторія (LectureRoom). Аудиторія, в якій проходить
+-- лекція.
+-- ▷ Тип даних — varchar(max).
+-- ▷ Не містить null-значення.
+-- ▷ Не може бути порожньою.
+-- ■ Ідентифікатор предмета (SubjectId). Предмет, з якого читається лекція.
+-- ▷ Тип даних — int.
+-- ▷ Не містить null-значення.
+-- ▷ Зовнішній ключ.
+-- ■ Ідентифікатор викладача (TeacherId). Викладач, який веде
+-- лекцію.
+-- ▷ Тип даних — int.
+-- ▷ Не містить null-значення.
+-- ▷ Зовнішній ключ.
+-- CREATE TABLE LECTURES (
+--     ID SERIAL PRIMARY KEY,
+--     LECTUREROOM TEXT NOT NULL CHECK (trim(LECTUREROOM) <> ''),
+--     SUBJECTID INT NOT NULL,
+--     TEACHERID INT NOT NULL,
+--     FOREIGN KEY (SUBJECTID) REFERENCES SUBJECTS(ID),
+--     FOREIGN KEY (TEACHERID) REFERENCES TEACHERS(ID)
+-- )
+
+
+-- Предмети (Subjects)
+-- ■ Ідентифікатор (Id). Унікальний ідентифікатор предмета.
+-- ▷ Тип даних — int.
+-- ▷ Автоприріст.
+-- ▷ Не містить null-значення.
+-- ▷ Первинний ключ.
+-- ■ Назва (Name). Назва предмета.
+-- ▷ Тип даних — varchar(100).
+-- ▷ Не містить null-значення.
+-- ▷ Не може бути порожньою.
+-- ▷ Має бути унікальною.
+
+-- CREATE TABLE SUBJECTS(
+-- 	ID SERIAL NOT NULL PRIMARY KEY,
+-- 	NAME VARCHAR(100) NOT NULL CHECK (trim(NAME) <> '') UNIQUE
+-- )
+
+-- Викладачі(Teachers)
+-- ■ Ідентифікатор (Id). Унікальний ідентифікатор
+-- викладача.
+-- ▷ Тип даних — int.
+-- ▷ Автоприріст.
+-- ▷ Не містить null-значення.
+-- ▷ Первинний ключ.
+-- ■ Ім’я (Name). Ім’я викладача.
+-- ▷ Тип даних — varchar(max).
+-- ▷ Не містить null-значення.
+-- ▷ Не може бути порожньою.
+-- ■ Ставка (Salary). Ставка викладача.
+-- ▷ Тип даних — DECIMAL(10, 2).
+-- ▷ Не містить null-значення.
+-- ▷ Не може бути меншою або дорівнювати 0.
+-- ■ Прізвище (Surname). Прізвище викладача.
+-- ▷ Тип даних — varchar(max).
+-- ▷ Не містить null-значення.
+-- ▷ Не може бути порожнє.
+-- CREATE TABLE TEACHERS(
+-- 	ID SERIAL NOT NULL PRIMARY KEY,
+-- 	NAME VARCHAR(100) NOT NULL CHECK (trim(NAME) <> ''),
+-- 	SALARY DECIMAL (10, 2) NOT NULL CHECK(SALARY >= 0),
+-- 	SURNAME VARCHAR(100) NOT NULL CHECK (trim(SURNAME) <> '')
+-- )
+
+-- FACULTIES
+-- INSERT INTO FACULTIES (ID, FINANCING, NAME) VALUES
+-- (1, 150000.00, 'Computer Science'),
+-- (2, 120000.00, 'Mathematics'),
+-- (3, 100000.00, 'Physics'),
+-- (4, 90000.00, 'Chemistry'),
+-- (5, 110000.00, 'Biology'),
+-- (6, 130000.00, 'Engineering'),
+-- (7, 95000.00, 'Economics'),
+-- (8, 85000.00, 'Law'),
+-- (9, 140000.00, 'Medicine'),
+-- (10, 70000.00, 'History');
+
+-- CURATORS
+-- INSERT INTO CURATORS (ID, NAME, SURNAME) VALUES
+-- (1, 'Ivan', 'Petrenko'),
+-- (2, 'Olena', 'Shevchenko'),
+-- (3, 'Andriy', 'Koval'),
+-- (4, 'Maria', 'Tkachenko'),
+-- (5, 'Dmytro', 'Bondarenko'),
+-- (6, 'Natalia', 'Melnyk'),
+-- (7, 'Serhii', 'Polishchuk'),
+-- (8, 'Iryna', 'Kravets'),
+-- (9, 'Oleh', 'Savchenko'),
+-- (10, 'Kateryna', 'Lysenko');
+
+-- DEPARTMENTS
+-- INSERT INTO DEPARTMENTS (ID, FINANCING, NAME, FACULTYID) VALUES
+-- (1, 30000.00, 'Software Engineering', 1),
+-- (2, 25000.00, 'Artificial Intelligence', 1),
+-- (3, 20000.00, 'Applied Mathematics', 2),
+-- (4, 18000.00, 'Theoretical Physics', 3),
+-- (5, 17000.00, 'Organic Chemistry', 4),
+-- (6, 22000.00, 'Genetics', 5),
+-- (7, 28000.00, 'Mechanical Engineering', 6),
+-- (8, 21000.00, 'Finance', 7),
+-- (9, 19000.00, 'Civil Law', 8),
+-- (10, 35000.00, 'Surgery', 9);
+
+-- GROUPS
+-- INSERT INTO GROUPS (ID, NAME, YEAR, DEPARTMENTID) VALUES
+-- (1, 'SE101', 1, 1),
+-- (2, 'SE201', 2, 1),
+-- (3, 'AI101', 1, 2),
+-- (4, 'AM301', 3, 3),
+-- (5, 'TP401', 4, 4),
+-- (6, 'OC201', 2, 5),
+-- (7, 'GN101', 1, 6),
+-- (8, 'ME501', 5, 7),
+-- (9, 'FN301', 3, 8),
+-- (10, 'SG401', 4, 10);
+
+-- SUBJECTS
+-- INSERT INTO SUBJECTS (ID, NAME) VALUES
+-- (1, 'Databases'),
+-- (2, 'Programming'),
+-- (3, 'Algorithms'),
+-- (4, 'Machine Learning'),
+-- (5, 'Linear Algebra'),
+-- (6, 'Physics'),
+-- (7, 'Chemistry'),
+-- (8, 'Genetics'),
+-- (9, 'Finance'),
+-- (10, 'Surgery Basics');
+
+-- TEACHERS
+-- INSERT INTO TEACHERS (ID, NAME, SALARY, SURNAME) VALUES
+-- (1, 'Petro', 2500.00, 'Ivanov'),
+-- (2, 'Anna', 2600.00, 'Sydorenko'),
+-- (3, 'Mykola', 2700.00, 'Kovalenko'),
+-- (4, 'Svitlana', 2800.00, 'Moroz'),
+-- (5, 'Yurii', 2900.00, 'Tkachenko'),
+-- (6, 'Olha', 3000.00, 'Boyko'),
+-- (7, 'Roman', 3100.00, 'Marchenko'),
+-- (8, 'Tetiana', 3200.00, 'Danylchuk'),
+-- (9, 'Vasyl', 3300.00, 'Kozak'),
+-- (10, 'Inna', 3400.00, 'Mazur');
+
+-- LECTURES
+-- INSERT INTO LECTURES (ID, LECTUREROOM, SUBJECTID, TEACHERID) VALUES
+-- (1, 'A101', 1, 1),
+-- (2, 'A102', 2, 2),
+-- (3, 'A103', 3, 3),
+-- (4, 'B201', 4, 4),
+-- (5, 'B202', 5, 5),
+-- (6, 'C301', 6, 6),
+-- (7, 'C302', 7, 7),
+-- (8, 'D401', 8, 8),
+-- (9, 'D402', 9, 9),
+-- (10, 'E501', 10, 10);
+
+-- GROUPSCURATORS
+-- INSERT INTO GROUPSCURATORS (ID, CURATORID, GROUPID) VALUES
+-- (1, 1, 1),
+-- (2, 2, 2),
+-- (3, 3, 3),
+-- (4, 4, 4),
+-- (5, 5, 5),
+-- (6, 6, 6),
+-- (7, 7, 7),
+-- (8, 8, 8),
+-- (9, 9, 9),
+-- (10, 10, 10);
+
+-- GROUPSLECTURES
+-- INSERT INTO GROUPSLECTURES (ID, GROUPID, LECTUREID) VALUES
+-- (1, 1, 1),
+-- (2, 2, 2),
+-- (3, 3, 3),
+-- (4, 4, 4),
+-- (5, 5, 5),
+-- (6, 6, 6),
+-- (7, 7, 7),
+-- (8, 8, 8),
+-- (9, 9, 9),
+-- (10, 10, 10);
+
+-- SELECT *
+-- FROM GROUPS
+
+-- 3. Виведіть прізвища кураторів груп і назви груп, які вони
+-- курирують.
+-- SELECT C.SURNAME, G.NAME
+-- FROM CURATORS C JOIN GROUPSCURATORS GC ON C.ID = GC.CURATORID JOIN GROUPS G ON G.ID = GC.GROUPID
+
+-- 4. Виведіть імена та прізвища викладачів, які читають лекції
+-- у групі «TP401».
+-- SELECT C.NAME, C.SURNAME, G.NAME
+-- FROM CURATORS C JOIN GROUPSCURATORS GC ON C.ID = GC.CURATORID JOIN GROUPS G ON G.ID = GC.GROUPID
+-- WHERE G.NAME = 'TP401'
+
+-- 1.Виведіть усі можливі пари рядків викладачів і груп.
+-- SELECT T.SURNAME, G.NAME
+-- FROM TEACHERS T
+-- CROSS JOIN GROUPS G
