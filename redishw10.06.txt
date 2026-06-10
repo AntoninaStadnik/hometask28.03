@@ -1,0 +1,88 @@
+gamepc@DESKTOP-UUVDLBA:~$ redis-cli
+127.0.0.1:6379> set username Tonya
+OK
+127.0.0.1:6379> RPUSH todo_list "Поготувати обід" "Вивчити Redis"
+(integer) 2
+127.0.0.1:6379> LRANGE todo_list 0 -1
+1) "\xd0\x9f\xd0\xbe\xd0\xb3\xd0\xbe\xd1\x82\xd1\x83\xd0\xb2\xd0\xb0\xd1\x82\xd0\xb8 \xd0\xbe\xd0\xb1\xd1\x96\xd0\xb4"
+2) "\xd0\x92\xd0\xb8\xd0\xb2\xd1\x87\xd0\xb8\xd1\x82\xd0\xb8 Redis"
+127.0.0.1:6379> hmset user_data: age
+(error) ERR wrong number of arguments for 'hmset' command
+127.0.0.1:6379> hmset user_data: age 27
+OK
+127.0.0.1:6379> hmset user_data: country Ukraine
+OK
+127.0.0.1:6379> hgetall user_data
+(empty array)
+127.0.0.1:6379> hgetall user_data:
+1) "age"
+2) "27"
+3) "country"
+4) "Ukraine"
+127.0.0.1:6379> sadd tags "programming" "redis" "tutorial"
+(integer) 3
+127.0.0.1:6379> smembers tags
+1) "programming"
+2) "redis"
+3) "tutorial"
+127.0.0.1:6379> incr page_views
+(integer) 1
+127.0.0.1:6379> incr page_views
+(integer) 2
+127.0.0.1:6379> incr page_views
+(integer) 3
+127.0.0.1:6379> get page_views
+"3"
+127.0.0.1:6379> setex session_token "abc123"
+(error) ERR wrong number of arguments for 'setex' command
+127.0.0.1:6379> setex session_token 20 "abc123"
+OK
+127.0.0.1:6379> get session_token
+"abc123"
+127.0.0.1:6379> get session_token
+(nil)
+127.0.0.1:6379> del username
+(integer) 1
+127.0.0.1:6379> get keys*
+(nil)
+127.0.0.1:6379> set user:1:name Tonya
+OK
+127.0.0.1:6379> KEYS user:*
+1) "user:1:name"
+127.0.0.1:6379> geoadd geolocation 46.48 30.43 Odesa
+(integer) 1
+127.0.0.1:6379> geoadd location 50.45 30.52 Kyiv
+(integer) 1
+127.0.0.1:6379> geoadd location 49.83 24.02 Lviv
+(integer) 1
+127.0.0.1:6379> geodist location Kyiv Lviv km
+"725.5598"
+127.0.0.1:6379> set tasks: task1
+OK
+127.0.0.1:6379> set tasks: task2
+OK
+127.0.0.1:6379> set tasks: task3
+OK
+127.0.0.1:6379> get tasks:task2
+(nil)
+127.0.0.1:6379> keys tasks:*
+1) "tasks:"
+127.0.0.1:6379>
+gamepc@DESKTOP-UUVDLBA:~$ redis-cli
+127.0.0.1:6379> keys tasks:*
+1) "tasks:"
+127.0.0.1:6379> RPUSH tasks "Task 1" "Task 2" "Task 3"
+(integer) 3
+127.0.0.1:6379> LRANGE tasks 0 -1
+1) "Task 1"
+2) "Task 2"
+3) "Task 3"
+127.0.0.1:6379> RPUSH tasks "Task 4"
+(integer) 4
+127.0.0.1:6379> del tasks "Task 1"
+(integer) 1
+127.0.0.1:6379> LRANGE tasks 0 -1
+(empty array)
+127.0.0.1:6379> flushall
+OK
+127.0.0.1:6379>
